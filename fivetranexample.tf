@@ -131,6 +131,18 @@ resource "aws_instance" "Dev-instance" {
   }
 }
 
+# To Run all commands in Servers
+
+user_data = <<EOF
+               #!/bin/bash
+               sudo yum update -y &&  sudo yum install -y docker
+               sudo systemctl start docker
+               sudo usermod -aG docker ec2-user
+               docker run -p 8080:80 nginx
+
+
+          EOF
+
 output "aws_ami_id" {
   value = data.aws_ami.latest-amazone-image.id
   
